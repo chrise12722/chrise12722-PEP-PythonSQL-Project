@@ -101,7 +101,7 @@ def write_user_analytics(csv_file_path):
     cursor.execute("SELECT userId, AVG(endTime - startTime) AS avgDuration, COUNT(*) AS numCalls FROM callLogs GROUP BY userId")
     analytic_records = cursor.fetchall()
 
-    with open(csv_file_path, "W") as user_analytics:
+    with open(csv_file_path, "w") as user_analytics:
         for row in analytic_records:
             user_analytics.write(f"{row[0]},{row[1]},{row[2]}\n")
 
