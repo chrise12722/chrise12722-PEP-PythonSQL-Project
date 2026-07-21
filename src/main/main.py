@@ -98,33 +98,13 @@ def load_and_clean_call_logs(file_path):
 # You must save records consisting of each userId, avgDuration, and numCalls
 # example: 1,105.0,4 - where 1 is the userId, 105.0 is the avgDuration, and 4 is the numCalls.
 def write_user_analytics(csv_file_path):
-    cursor.execute("SELECT COUNT(*) FROM users")
-    user_count = cursor.fetchone()[0]
-    cursor.execute("SELECT userId, startTime, endTime FROM callLogs")
-    call_logs = cursor.fetchall()
-    log_counter = 0
-    user_data = {}
-    # Store each row in user_data dictionary, where key = userId and value = list [list of call durations to avg later, num of calls]
-    for row in call_logs:
-        user_id = call_logs[log_counter][0]
-        log_counter += 1
-        if user_id in user_data.keys():
-            user_data[user_id][0].append(float(row[2]) - row[1])
-            user_data[user_id][1] += 1
-        else:
-            user_data[user_id] = [[float(row[2]) - row[1]], 1]
-    # Find average for each user's call durations
-    for user_id, data in user_data.items():
-        durations = data[0]
-        num_calls = data[1]
-        average = sum(durations) / float(num_calls)
-        data[0] = average
-    
-    with open(csv_file_path, "w") as user_analytics:
-        for user_id, data in user_data.items():
-             user_analytics.write(f"{user_id},{data[0]},{data[1]}\n")
+    cursor.execute("SELECT userId, AVG(endTime - startTime) AS avgDuration, COUNT(*) AS numCalls FROM callLogs GROUP BY userId")
+    analytic_records = cursor.fetchall()
 
-    user_analytics.close()
+    with open(csv_file_path, "W") as user_analytics:
+        for row in analytic_records:
+            user_analytics.write(f"{row[0]},{row[1]},{row[2]}\n")
+
 
 
 
