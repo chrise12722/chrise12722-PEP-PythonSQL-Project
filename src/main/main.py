@@ -102,8 +102,11 @@ def write_user_analytics(csv_file_path):
     analytic_records = cursor.fetchall()
 
     with open(csv_file_path, "w") as user_analytics:
+        next(user_analytics, None)
         for row in analytic_records:
             user_analytics.write(f"{row[0]},{row[1]},{row[2]}\n")
+
+    user_analytics.close()
 
 
 
@@ -117,6 +120,8 @@ def write_ordered_calls(csv_file_path):
     with open(csv_file_path, "w") as ordered_calls:
         csv_writer = csv.writer(ordered_calls)
         csv_writer.writerows(call_logs)
+
+    ordered_calls.close()
 
 
 
