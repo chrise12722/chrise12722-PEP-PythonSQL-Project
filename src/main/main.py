@@ -48,8 +48,28 @@ def main():
 
 # This function will load the users.csv file into the users table, discarding any records with incomplete data
 def load_and_clean_users(file_path):
+    column_count = 2
+    records = []
 
-    print("TODO: load_users")
+    with open(file_path, "r") as user_records:
+            next(user_records, None)
+            for row in user_records:
+                clean_row = row.strip()
+                if not clean_row:
+                    continue
+                
+                row_columns = clean_row.split(",")
+                if len(row_columns) != column_count:
+                    continue
+                before, sep, after = clean_row.partition(",")
+                if before and sep and after:
+                    records.append(tuple(row_columns))
+                else:
+                    continue
+
+    cursor.executemany("INSERT INTO users (firstName, lastName) VALUES (?, ?)", records)
+
+    conn.commit()
 
 
 # This function will load the callLogs.csv file into the callLogs table, discarding any records with incomplete data
