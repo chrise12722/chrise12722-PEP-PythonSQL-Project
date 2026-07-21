@@ -74,8 +74,23 @@ def load_and_clean_users(file_path):
 
 # This function will load the callLogs.csv file into the callLogs table, discarding any records with incomplete data
 def load_and_clean_call_logs(file_path):
+    column_count = 5
+    call_logs = []
 
-    print("TODO: load_call_logs")
+    with open(file_path, "r") as call_records:
+        next(call_records, None)
+        for row in call_records:
+            clean_row = row.strip()
+            if not clean_row:
+                continue
+
+            row_columns = clean_row.split(",")
+            if len(row_columns) != column_count or any(text.strip() == "" for text in row_columns):
+                continue
+            
+            records.append(tuple(row_columns))
+    cursor.executemany("INSERT INTO callLogs (phoneNumber, startTime, endTime, direction, userId) VALUES (?, ?, ?, ?, ?)", records)
+    conn.commit()
 
 
 # This function will write analytics data to testUserAnalytics.csv - average call time, and number of calls per user.
