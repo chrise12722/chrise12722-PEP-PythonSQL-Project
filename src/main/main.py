@@ -115,8 +115,8 @@ def write_ordered_calls(csv_file_path):
     call_logs = cursor.fetchall()
 
     with open(csv_file_path, "w") as ordered_calls:
-        for row in call_logs:
-            ordered_calls.write(f"{row}\n")
+        csv_writer = csv.writer(ordered_calls)
+        csv_writer.writerows(call_logs)
 
 
 
