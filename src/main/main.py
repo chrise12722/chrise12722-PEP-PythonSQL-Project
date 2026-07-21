@@ -88,8 +88,8 @@ def load_and_clean_call_logs(file_path):
             if len(row_columns) != column_count or any(text.strip() == "" for text in row_columns):
                 continue
             
-            records.append(tuple(row_columns))
-    cursor.executemany("INSERT INTO callLogs (phoneNumber, startTime, endTime, direction, userId) VALUES (?, ?, ?, ?, ?)", records)
+            call_logs.append(tuple(row_columns))
+    cursor.executemany("INSERT INTO callLogs (phoneNumber, startTime, endTime, direction, userId) VALUES (?, ?, ?, ?, ?)", call_logs)
     conn.commit()
 
 
