@@ -109,10 +109,10 @@ def write_user_analytics(csv_file_path):
         user_id = call_logs[log_counter][0]
         log_counter += 1
         if user_id in user_data.keys():
-            user_data[user_id][0].append(row[3] - row[2])
+            user_data[user_id][0].append(float(row[3] - row[2]))
             user_data[user_id][1] += 1
         else:
-            user_data[user_id] = [[row[3] - row[2]], 1]
+            user_data[user_id] = [float([row[3] - row[2]]), 1]
     # Find average for each user's call durations
     for user_id, data in user_data.items():
         durations = data[0]
