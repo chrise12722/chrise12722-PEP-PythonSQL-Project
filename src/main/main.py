@@ -59,13 +59,10 @@ def load_and_clean_users(file_path):
                     continue
                 
                 row_columns = clean_row.split(",")
-                if len(row_columns) != column_count:
+                if len(row_columns) != column_count or any(text.strip() == "" for text in row_columns):
                     continue
-                before, sep, after = clean_row.partition(",")
-                if before and sep and after:
-                    records.append(tuple(row_columns))
-                else:
-                    continue
+                    
+                records.append(tuple(row_columns))
 
     cursor.executemany("INSERT INTO users (firstName, lastName) VALUES (?, ?)", records)
 
@@ -89,7 +86,9 @@ def load_and_clean_call_logs(file_path):
                 continue
             
             call_logs.append(tuple(row_columns))
+
     cursor.executemany("INSERT INTO callLogs (phoneNumber, startTime, endTime, direction, userId) VALUES (?, ?, ?, ?, ?)", call_logs)
+    
     conn.commit()
 
 
