@@ -98,33 +98,7 @@ def load_and_clean_call_logs(file_path):
 # You must save records consisting of each userId, avgDuration, and numCalls
 # example: 1,105.0,4 - where 1 is the userId, 105.0 is the avgDuration, and 4 is the numCalls.
 def write_user_analytics(csv_file_path):
-    cursor.execute("SELECT COUNT(*) FROM users")
-    user_count = cursor.fetchone()[0]
-    cursor.execute("SELECT * FROM callLogs")
-    call_logs = cursor.fetchall()
-    log_counter = 0
-    user_data = {}
-    # Store each row in user_data dictionary, where key = userId and value = list [list of call durations to avg later, num of calls]
-    for row in call_logs:
-        user_id = call_logs[log_counter][0]
-        log_counter += 1
-        if user_id in user_data.keys():
-            user_data[user_id][0].append(row[3] - row[2])
-            user_data[user_id][1] += 1
-        else:
-            user_data[user_id] = [[row[3] - row[2]], 1]
-    # Find average for each user's call durations
-    for user_id, data in user_data.items():
-        durations = data[0]
-        num_calls = data[1]
-        average = sum(durations) / num_calls
-        data[0] = average
-    
-    wtih open(csv_file_path, "w") as user_analytics:
-        for user_id, data in user_data.items():
-            csv_file_path.write(f"{user_id},{data[0]},{data[1]}")
-
-    user_analytics.close()
+    print("TO-DO")
 
 
 
