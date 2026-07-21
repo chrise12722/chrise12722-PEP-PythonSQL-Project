@@ -106,7 +106,7 @@ def write_user_analytics(csv_file_path):
     user_data = {}
     # Store each row in user_data dictionary, where key = userId and value = list [list of call durations to avg later, num of calls]
     for row in call_logs:
-        user_id = call_logs[log_counter][0]
+        user_id = call_logs[log_counter][5]
         log_counter += 1
         if user_id in user_data.keys():
             user_data[user_id][0].append(float(row[3]) - row[2])
