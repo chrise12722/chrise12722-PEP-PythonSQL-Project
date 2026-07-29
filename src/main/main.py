@@ -102,6 +102,7 @@ def write_user_analytics(csv_file_path):
     analytic_records = cursor.fetchall()
 
     with open(csv_file_path, "w") as user_analytics:
+        user_analytics.write("UserId, AvgDuration, NumCalls\n")
         for row in analytic_records:
             user_analytics.write(f"{row[0]},{row[1]},{row[2]}\n")
 
